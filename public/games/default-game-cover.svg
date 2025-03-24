@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="#f3f4f6"/>
+  <g transform="translate(175,87.5)">
+    <path d="M25,0 A25,25 0 1,1 -25,0 A25,25 0 1,1 25,0 M-12.5,-12.5 L12.5,12.5 M-12.5,12.5 L12.5,-12.5" 
+          fill="none" stroke="#9ca3af" stroke-width="2"/>
+  </g>
+  <text x="200" y="150" font-family="system-ui" font-size="16" fill="#6b7280" text-anchor="middle">Game Preview Not Available</text>
+</svg> 
