@@ -6,10 +6,9 @@ interface Props {
   params: {
     id: string;
   };
-  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default function GamePage({ params, searchParams }: Props) {
+export default function GamePage({ params }: Props) {
   const game = games.find((g) => g.id === params.id);
 
   if (!game) {

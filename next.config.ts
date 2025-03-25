@@ -1,22 +1,10 @@
-import type { NextConfig } from "next";
-
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const config = {
+  output: 'standalone',
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'bandit.rip',
-        pathname: '/res/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        pathname: '/**',
-      }
-    ],
-    unoptimized: true,
-  },
+    domains: ['placehold.co', 'bandit.rip'],
+    unoptimized: true
+  }
 };
 
-export default nextConfig;
+export default config;
