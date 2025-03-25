@@ -24,6 +24,7 @@ export interface Game {
   playCount?: number;
   rating?: number;
   ratingCount?: number;
+  duration?: string;
   tags?: string[];
   features?: string[];
   controls?: {
