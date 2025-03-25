@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Game } from '@/data/games';
 
@@ -9,11 +10,13 @@ export default function GameCard({ game }: GameCardProps) {
   return (
     <Link href={`/games/${game.id}`} className="block">
       <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-        <div className="relative aspect-video w-full">
-          <img
+        <div className="relative aspect-video">
+          <Image
             src={game.imageUrl}
             alt={game.title}
-            className="absolute inset-0 w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
           />
         </div>
         <div className="p-4">

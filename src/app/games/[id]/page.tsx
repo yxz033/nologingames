@@ -2,13 +2,14 @@ import { games } from '@/data/games';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 
-interface GamePageProps {
+interface Props {
   params: {
     id: string;
   };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default function GamePage({ params }: GamePageProps) {
+export default function GamePage({ params, searchParams }: Props) {
   const game = games.find((g) => g.id === params.id);
 
   if (!game) {
@@ -33,6 +34,7 @@ export default function GamePage({ params }: GamePageProps) {
             alt={game.title}
             fill
             className="object-cover"
+            priority
           />
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <a
