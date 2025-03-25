@@ -1,11 +1,11 @@
 import { games } from '@/data/games';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import GameIframe from '@/components/GameIframe';
-import GameInfo from '@/components/GameInfo';
-import GameStats from '@/components/GameStats';
-import GameScreenshots from '@/components/GameScreenshots';
-import RelatedGames from '@/components/RelatedGames';
+import GameIframe from '@/components/games/game-iframe';
+import GameInfo from './components/GameInfo';
+import GameStats from './components/GameStats';
+import GameScreenshots from './components/GameScreenshots';
+import RelatedGames from './components/RelatedGames';
 
 // 添加generateStaticParams函数来生成所有可能的游戏路径
 export async function generateStaticParams() {

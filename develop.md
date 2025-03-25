@@ -250,17 +250,17 @@
 ## Technical Implementation Guide
 
 ### Technology Stack
-1. Frontend Framework: React + Next.js
-   - Most popular and well-documented
-   - Rich ecosystem and community support
-   - Easy to learn and maintain
+1. Frontend Framework: Next.js 14+ with App Router
+   - Server Components by default
    - Built-in routing and optimization
+   - Streaming and Suspense support
+   - Built-in image optimization
 
-2. UI Framework: Tailwind CSS
+2. UI Framework: Tailwind CSS + Shadcn UI
    - Utility-first CSS framework
-   - Easy responsive design
+   - Pre-built accessible components
    - Modern and clean aesthetics
-   - No need to write custom CSS
+   - Dark mode support
 
 3. Development Tools
    - VS Code
@@ -272,16 +272,30 @@
 ```
 nologingames/
 ├── src/
-│   ├── components/         # Reusable components
-│   │   ├── Layout/        # Layout components
-│   │   ├── GameCard/      # Game card components
-│   │   └── Ads/           # Ad components
-│   ├── pages/             # Page components
-│   │   ├── Home/
-│   │   ├── Game/
-│   │   └── Category/
-│   └── data/              # Game data
-├── public/                # Static assets
+│   ├── app/                    # App Router pages
+│   │   ├── layout.tsx         # Root layout
+│   │   ├── page.tsx           # Homepage
+│   │   ├── games/             # Games section
+│   │   │   ├── [id]/         # Dynamic game pages
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── loading.tsx
+│   │   │   │   ├── error.tsx
+│   │   │   │   └── components/  # Page-specific components
+│   │   │   └── page.tsx       # Games listing
+│   │   └── categories/        # Categories section
+│   ├── components/            # Shared components
+│   │   ├── ui/               # UI components
+│   │   │   ├── button.tsx
+│   │   │   └── card.tsx
+│   │   └── games/            # Game-specific components
+│   │       ├── game-card.tsx
+│   │       └── game-iframe.tsx
+│   ├── lib/                  # Utilities and helpers
+│   │   ├── utils.ts
+│   │   └── constants.ts
+│   └── types/                # TypeScript types
+│       └── game.ts
+├── public/                   # Static assets
 └── package.json
 ```
 
@@ -289,14 +303,21 @@ nologingames/
 
 1. Project Initialization
 ```bash
-npx create-next-app nologingames --typescript --tailwind
+npx create-next-app@latest nologingames --typescript --tailwind --app --src-dir
 cd nologingames
 ```
 
 2. Core Components Implementation
-```jsx
-// components/GameFrame.jsx
-const GameFrame = ({ gameUrl }) => {
+```typescript
+// components/games/game-iframe.tsx
+'use client'
+
+interface GameIframeProps {
+  gameUrl: string;
+  title: string;
+}
+
+export function GameIframe({ gameUrl, title }: GameIframeProps) {
   return (
     <div className="w-full aspect-video">
       <iframe 
@@ -304,13 +325,20 @@ const GameFrame = ({ gameUrl }) => {
         className="w-full h-full border-0"
         allow="fullscreen"
         loading="lazy"
+        title={title}
       />
     </div>
   );
-};
+}
 
-// components/AdSpace.jsx
-const AdBanner = ({ slot }) => {
+// components/ui/ad-banner.tsx
+'use client'
+
+interface AdBannerProps {
+  slot: string;
+}
+
+export function AdBanner({ slot }: AdBannerProps) {
   return (
     <div className="w-full h-[90px] bg-gray-100">
       <script
@@ -324,7 +352,7 @@ const AdBanner = ({ slot }) => {
       />
     </div>
   );
-};
+}
 ```
 
 ### Deployment Strategy
@@ -333,6 +361,7 @@ const AdBanner = ({ slot }) => {
    - Easy deployment process
    - Automatic HTTPS/SSL
    - Built-in CI/CD
+   - Edge Functions support
 
 2. Domain Setup
    - Register domain (nologingames.online)
@@ -354,13 +383,13 @@ const AdBanner = ({ slot }) => {
    - Ad loading optimization
 
 3. Performance
-   - Image optimization
-   - Lazy loading
-   - Code splitting
-   - Caching strategy
+   - Image optimization with next/image
+   - Lazy loading with Suspense
+   - Code splitting with dynamic imports
+   - Caching strategy with revalidate
 
 4. SEO
-   - Meta tags optimization
+   - Metadata API usage
    - Sitemap generation
    - Robots.txt configuration
    - Schema markup implementation
@@ -383,113 +412,55 @@ const AdBanner = ({ slot }) => {
    - Performance monitoring
    - Ad placement verification
 
-## Next.js + Cloudflare Pages 部署注意事项
+## Next.js App Router 最佳实践
 
-### 1. Next.js 配置关键点
-- 使用`output: 'export'`进行静态导出
-- 图片配置需要设置`unoptimized: true`
-- 动态路由页面必须提供`generateStaticParams()`
-- 避免在服务器组件中使用客户端事件处理器
+### 1. 服务器组件 vs 客户端组件
+- 默认使用服务器组件
+- 仅在需要时使用 'use client'
+- 将客户端逻辑隔离在小型组件中
+- 使用 Suspense 处理加载状态
 
-```typescript
-// next.config.ts 推荐配置
-const config = {
-  output: 'export',
-  images: {
-    unoptimized: true,
-    domains: ['your-image-domains']
-  }
-};
-```
+### 2. 数据获取
+- 使用服务器组件进行数据获取
+- 实现适当的缓存策略
+- 使用 revalidate 控制缓存
+- 实现错误处理和重试机制
 
-### 2. 类型定义最佳实践
-- 页面组件使用正确的Props类型
-- 避免使用any类型
-- 为所有组件添加明确的返回类型
-- 使用严格的类型检查
+### 3. 路由和布局
+- 使用嵌套布局
+- 实现动态路由
+- 使用 generateStaticParams
+- 实现适当的加载和错误状态
 
-```typescript
-// 动态路由页面示例
-export async function generateStaticParams() {
-  return items.map((item) => ({
-    id: item.id
-  }));
-}
+### 4. 性能优化
+- 使用 next/image 优化图片
+- 实现适当的代码分割
+- 使用 Suspense 处理加载状态
+- 优化字体加载
 
-interface PageProps {
-  params: { id: string };
-}
-
-export default function Page({ params }: PageProps) {
-  // 组件实现
-}
-```
-
-### 3. 组件开发规范
-- 明确区分服务器组件和客户端组件
-- 事件处理器只在客户端组件中使用
-- 图片处理使用Next.js的Image组件
-- 使用blurDataURL处理图片加载状态
-
-```typescript
-// 客户端组件示例
-'use client'
-
-// 服务器组件示例（默认）
-import Image from 'next/image';
-
-export default function ServerComponent() {
-  return (
-    <Image
-      src={src}
-      alt={alt}
-      blurDataURL="data:image/jpeg;base64,..."
-      placeholder="blur"
-    />
-  );
-}
-```
-
-### 4. Cloudflare Pages 部署配置
-- 构建命令: `npm run build`
-- 输出目录: `out`
-- 环境变量:
-  * NODE_VERSION: 18.18.0
-  * 删除不必要的NEXT_OUTPUT_MODE
-
-### 5. 开发流程建议
-1. 初始配置
-   - 正确设置next.config.ts
-   - 配置严格的TypeScript检查
-   - 设置ESLint规则
-
-2. 开发阶段
-   - 使用严格模式开发
-   - 定期运行类型检查
-   - 测试构建输出
-
-3. 部署前检查
-   - 运行完整构建测试
-   - 验证所有动态路由
-   - 检查图片优化配置
+### 5. 部署注意事项
+- 使用 Edge Runtime 优化性能
+- 实现适当的缓存策略
+- 配置正确的环境变量
+- 监控性能指标
 
 ### 6. 常见问题解决方案
 1. 404错误
-   - 检查输出目录配置
+   - 检查路由配置
    - 验证动态路由生成
-   - 确认构建命令正确
+   - 确认页面文件存在
 
 2. 图片加载问题
-   - 使用unoptimized: true
-   - 配置正确的domains
+   - 使用 next/image
+   - 配置正确的 domains
    - 提供备选图片方案
 
 3. 类型错误
-   - 使用正确的页面props类型
+   - 使用正确的类型定义
    - 避免混用服务器/客户端代码
    - 提供完整的类型定义
 
 4. 构建错误
-   - 检查Node.js版本
+   - 检查 Node.js 版本
    - 验证依赖兼容性
-   - 确保静态导出配置正确
+   - 确保配置正确

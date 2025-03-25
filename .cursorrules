@@ -11,23 +11,32 @@ Naming Conventions
 
 Use lowercase with dashes for directories (e.g., components/auth-wizard).
 Favor named exports for components.
+Use PascalCase for component files (e.g., GameCard.tsx).
+Use camelCase for utility files (e.g., formatDate.ts).
 
 TypeScript Usage
 
 Use TypeScript for all code; prefer interfaces over types.
 Avoid enums; use maps instead.
 Use functional components with TypeScript interfaces.
+Define explicit return types for components and functions.
+Use strict type checking.
 
 Syntax and Formatting
 
 Use the "function" keyword for pure functions.
 Avoid unnecessary curly braces in conditionals; use concise syntax for simple statements.
 Use declarative JSX.
+Use template literals for string interpolation.
+Use optional chaining and nullish coalescing.
 
 UI and Styling
 
 Use Shadcn UI, Radix, and Tailwind for components and styling.
 Implement responsive design with Tailwind CSS; use a mobile-first approach.
+Use CSS variables for theme values.
+Follow accessibility best practices.
+Use semantic HTML elements.
 
 Performance Optimization
 
@@ -35,6 +44,8 @@ Minimize 'use client', 'useEffect', and 'setState'; favor React Server Component
 Wrap client components in Suspense with fallback.
 Use dynamic loading for non-critical components.
 Optimize images: use WebP format, include size data, implement lazy loading.
+Use proper caching strategies.
+Implement proper error boundaries.
 
 Key Conventions
 
@@ -45,7 +56,40 @@ Limit 'use client':
 Favor server components and Next.js SSR.
 Use only for Web API access in small components.
 Avoid for data fetching or state management.
+Use proper data fetching patterns (SWR, React Query).
+Implement proper loading and error states.
 
+Next.js App Router Specific
 
+Use proper file naming conventions:
+- page.tsx for pages
+- layout.tsx for layouts
+- loading.tsx for loading states
+- error.tsx for error boundaries
+- not-found.tsx for 404 pages
+
+Follow proper routing patterns:
+- Use dynamic routes with [param]
+- Implement proper generateStaticParams
+- Use proper metadata exports
+- Implement proper loading and error states
+
+Follow proper data fetching patterns:
+- Use proper caching strategies
+- Implement proper revalidation
+- Use proper streaming patterns
+- Implement proper error handling
+
+Follow proper component patterns:
+- Use proper server/client component boundaries
+- Implement proper suspense boundaries
+- Use proper image optimization
+- Implement proper font optimization
+
+Follow proper deployment patterns:
+- Use proper static/dynamic exports
+- Implement proper edge runtime
+- Use proper middleware patterns
+- Implement proper API routes
 
 Follow Next.js docs for Data Fetching, Rendering, and Routing.

@@ -1,5 +1,5 @@
 import { games } from '@/data/games';
-import GameCard from '@/components/GameCard';
+import GameCard from '@/components/games/game-card';
 import Link from 'next/link';
 
 export default function Home() {
