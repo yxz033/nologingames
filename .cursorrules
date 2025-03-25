@@ -93,3 +93,102 @@ Follow proper deployment patterns:
 - Implement proper API routes
 
 Follow Next.js docs for Data Fetching, Rendering, and Routing.
+
+Component Design Patterns
+
+1. Client Components:
+- Use 'use client' directive at the top
+- Keep client components small and focused
+- Move client-side logic to separate components
+- Wrap with Suspense when using hooks
+- Handle loading and error states
+
+2. Server Components:
+- Default to server components
+- Keep data fetching in server components
+- Pass data as props to client components
+- Use proper caching strategies
+- Implement proper error boundaries
+
+3. Component Structure:
+- One component per file
+- Clear component hierarchy
+- Proper prop types
+- Consistent naming
+- Clear separation of concerns
+
+4. State Management:
+- Use React hooks for local state
+- Use URL params for shared state
+- Avoid prop drilling
+- Use context for theme/auth
+- Implement proper loading states
+
+Error Handling
+
+1. TypeScript Errors:
+- Define proper interfaces
+- Use strict type checking
+- Handle optional values
+- Use type guards
+- Avoid any type
+
+2. Runtime Errors:
+- Implement error boundaries
+- Handle loading states
+- Validate user input
+- Handle API errors
+- Provide fallback UI
+
+3. Build Errors:
+- Check dependencies
+- Verify imports
+- Validate exports
+- Check file paths
+- Review type definitions
+
+Performance Guidelines
+
+1. Code Splitting:
+- Use dynamic imports
+- Implement lazy loading
+- Split by routes
+- Split by features
+- Optimize bundle size
+
+2. Caching:
+- Use proper cache headers
+- Implement stale-while-revalidate
+- Cache static assets
+- Cache API responses
+- Use proper cache keys
+
+3. Optimization:
+- Optimize images
+- Minimize CSS
+- Use proper fonts
+- Implement proper loading
+- Monitor performance
+
+Development Workflow
+
+1. Code Review:
+- Check types
+- Verify imports
+- Review component structure
+- Validate error handling
+- Test edge cases
+
+2. Testing:
+- Unit tests for utilities
+- Component tests
+- Integration tests
+- E2E tests
+- Performance tests
+
+3. Documentation:
+- Update README
+- Document components
+- Add type definitions
+- Include examples
+- Update changelog

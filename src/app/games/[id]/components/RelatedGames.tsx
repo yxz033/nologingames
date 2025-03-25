@@ -1,4 +1,5 @@
-import { Game, games } from '@/data/games';
+import { Game } from '@/types/game';
+import { games } from '@/data/games';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -10,7 +11,7 @@ export default function RelatedGames({ game }: RelatedGamesProps) {
   if (!game.relatedGames || game.relatedGames.length === 0) return null;
 
   const relatedGames = game.relatedGames
-    .map(id => games.find(g => g.id === id))
+    .map((id: string) => games.find(g => g.id === id))
     .filter((g): g is Game => g !== undefined)
     .slice(0, 4);
 
@@ -20,7 +21,7 @@ export default function RelatedGames({ game }: RelatedGamesProps) {
     <div className="bg-white rounded-lg shadow-md p-6">
       <h2 className="text-xl font-semibold mb-4">相关游戏</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {relatedGames.map((relatedGame) => (
+        {relatedGames.map((relatedGame: Game) => (
           <Link
             key={relatedGame.id}
             href={`/games/${relatedGame.id}`}
@@ -28,7 +29,7 @@ export default function RelatedGames({ game }: RelatedGamesProps) {
           >
             <div className="relative aspect-video rounded-lg overflow-hidden mb-2">
               <Image
-                src={relatedGame.thumbnailUrl || relatedGame.imageUrl}
+                src={relatedGame.imageUrl}
                 alt={relatedGame.title}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-200"

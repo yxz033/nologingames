@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Game } from '@/data/games';
+import { Game } from '@/types/game';
 
 interface GameCardProps {
   game: Game;
@@ -23,7 +23,7 @@ export default function GameCard({ game }: GameCardProps) {
             placeholder="blur"
           />
         </div>
-        <div className="p-3 sm:p-4">
+        <div className="p-4">
           <h3 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2 truncate">{game.title}</h3>
           <p className="text-gray-600 text-xs sm:text-sm mb-2 overflow-hidden text-ellipsis line-clamp-2">{game.description}</p>
           <div className="flex justify-between items-center text-xs sm:text-sm">

@@ -8,16 +8,16 @@ import { Suspense } from 'react';
 import { GameListSection } from '@/components/games/game-list-section';
 
 const categories = [
-  { id: 'action', name: '动作游戏' },
-  { id: 'puzzle', name: '解谜游戏' },
-  { id: 'strategy', name: '策略游戏' },
-  { id: 'arcade', name: '街机游戏' },
-  { id: 'sports', name: '体育游戏' },
-  { id: 'racing', name: '竞速游戏' },
-  { id: 'adventure', name: '冒险游戏' },
-  { id: 'shooter', name: '射击游戏' },
-  { id: 'rpg', name: '角色扮演' },
-  { id: 'casual', name: '休闲游戏' },
+  { id: 'action', name: 'Action' },
+  { id: 'puzzle', name: 'Puzzle' },
+  { id: 'strategy', name: 'Strategy' },
+  { id: 'arcade', name: 'Arcade' },
+  { id: 'sports', name: 'Sports' },
+  { id: 'racing', name: 'Racing' },
+  { id: 'adventure', name: 'Adventure' },
+  { id: 'shooter', name: 'Shooter' },
+  { id: 'rpg', name: 'RPG' },
+  { id: 'casual', name: 'Casual' },
 ];
 
 export function HomePage() {
@@ -27,7 +27,7 @@ export function HomePage() {
         <SearchSection 
           totalCount={games.length} 
           filteredCount={games.length} 
-          categoryName="全部游戏"
+          categoryName="All Games"
         />
       </Suspense>
 
@@ -53,8 +53,8 @@ export function HomePage() {
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg" />
           <div className="relative p-6 rounded-lg border bg-card/50">
-            <h2 className="text-xl font-semibold mb-2">热门游戏</h2>
-            <p className="text-muted-foreground">发现最受欢迎的游戏</p>
+            <h2 className="text-xl font-semibold mb-2">Popular Games</h2>
+            <p className="text-muted-foreground">Discover the most popular games</p>
           </div>
         </div>
 

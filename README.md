@@ -20,6 +20,61 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Common Issues and Solutions
+
+### 1. Dynamic Route Parameters
+If you encounter type errors with dynamic route parameters:
+```typescript
+// Wrong
+interface PageProps {
+  params: {
+    id: string
+  }
+}
+
+// Correct
+interface PageProps {
+  params: Promise<{
+    id: string
+  }>
+}
+```
+
+### 2. Type Imports
+When using Game type:
+```typescript
+// Wrong
+import { Game } from '@/data/games'
+
+// Correct
+import { Game } from '@/types/game'
+```
+
+### 3. Component Props
+Make sure to properly type your components:
+```typescript
+interface GameCardProps {
+  game: Game;
+}
+
+export default function GameCard({ game }: GameCardProps) {
+  // ...
+}
+```
+
+### 4. Image Handling
+Use next/image with proper error handling:
+```typescript
+<Image
+  src={game.imageUrl || defaultGameImage}
+  alt={game.title}
+  onError={(e) => {
+    const target = e.target as HTMLImageElement;
+    target.src = defaultGameImage;
+  }}
+/>
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
@@ -34,3 +89,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Recent Updates
+
+### 2024-03-15
+1. Type System
+   - Added new Game interface properties
+   - Fixed type import paths
+   - Improved component typing
+
+2. Components
+   - Enhanced GameCard component
+   - Optimized GameIframe fullscreen
+   - Added error handling
+
+3. Routing
+   - Added async params support
+   - Improved dynamic routing
+   - Enhanced error handling

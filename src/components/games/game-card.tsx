@@ -1,6 +1,6 @@
 'use client'
 
-import { Game } from '@/data/games';
+import { Game } from '@/types/game';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Star, Users, Clock } from 'lucide-react';
@@ -9,6 +9,8 @@ interface GameCardProps {
   game: Game;
 }
 
+const defaultGameImage = 'https://placehold.co/600x400/png?text=Game';
+
 export default function GameCard({ game }: GameCardProps) {
   return (
     <Link href={`/games/${game.id}`} className="group">
@@ -16,17 +18,21 @@ export default function GameCard({ game }: GameCardProps) {
         {/* 游戏缩略图 */}
         <div className="relative aspect-video">
           <Image
-            src={game.imageUrl}
+            src={game.imageUrl || defaultGameImage}
             alt={game.title}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = defaultGameImage;
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           
           {/* 游戏标签 */}
           <div className="absolute top-2 left-2 flex gap-2">
-            {game.tags?.map((tag) => (
+            {game.tags?.map((tag: string) => (
               <span
                 key={tag}
                 className="px-2 py-1 text-xs font-medium text-white bg-black/50 backdrop-blur-sm rounded-full"
@@ -65,7 +71,7 @@ export default function GameCard({ game }: GameCardProps) {
               {/* 游玩次数 */}
               <div className="flex items-center text-gray-500">
                 <Users className="w-4 h-4 mr-1" />
-                <span>{game.playCount}</span>
+                <span>{game.plays}</span>
               </div>
 
               {/* 游戏时长 */}
@@ -78,7 +84,7 @@ export default function GameCard({ game }: GameCardProps) {
             {/* 游戏类型 */}
             <div className="flex items-center">
               <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                {game.type}
+                {game.genre}
               </span>
             </div>
           </div>

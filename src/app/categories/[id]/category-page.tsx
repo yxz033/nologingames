@@ -15,9 +15,9 @@ interface CategoryPageProps {
 
 export function CategoryPage({ params }: CategoryPageProps) {
   const { id } = params;
-  const categoryName = categoryInfo[id]?.name || '未知分类';
+  const categoryName = categoryInfo[id]?.name || 'Unknown Category';
 
-  // 获取当前分类的游戏
+  // Get games for current category
   const categoryGames = games.filter(game => game.category === id);
 
   return (
@@ -37,7 +37,7 @@ export function CategoryPage({ params }: CategoryPageProps) {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg" />
           <div className="relative p-6 rounded-lg border bg-card/50">
             <h2 className="text-xl font-semibold mb-2">{categoryName}</h2>
-            <p className="text-muted-foreground">浏览{categoryName}分类下的所有游戏</p>
+            <p className="text-muted-foreground">Browse all games in {categoryName}</p>
           </div>
         </div>
 

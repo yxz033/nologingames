@@ -1,23 +1,24 @@
 'use client'
 
-import { Game } from '@/data/games';
+import { Game } from '@/types/game';
 import { useState, useRef, useCallback, useEffect } from 'react';
 
 // 扩展Document接口以包含浏览器特定的全屏属性
-interface FullscreenDocument extends Document {
-  webkitFullscreenEnabled?: boolean;
-  mozFullScreenEnabled?: boolean;
-  msFullscreenEnabled?: boolean;
-  webkitFullscreenElement?: Element | null;
-  mozFullScreenElement?: Element | null;
-  msFullscreenElement?: Element | null;
-}
+declare global {
+  interface Document {
+    webkitFullscreenElement?: Element;
+    mozFullScreenElement?: Element;
+    msFullscreenElement?: Element;
+    webkitExitFullscreen?: () => void;
+    mozCancelFullScreen?: () => void;
+    msExitFullscreen?: () => void;
+  }
 
-// 扩展HTMLElement接口以包含浏览器特定的全屏方法
-interface FullscreenElement extends HTMLElement {
-  webkitRequestFullscreen?: () => Promise<void>;
-  mozRequestFullScreen?: () => Promise<void>;
-  msRequestFullscreen?: () => Promise<void>;
+  interface HTMLElement {
+    webkitRequestFullscreen?: () => Promise<void>;
+    mozRequestFullScreen?: () => Promise<void>;
+    msRequestFullscreen?: () => Promise<void>;
+  }
 }
 
 interface GameIframeProps {
@@ -25,141 +26,82 @@ interface GameIframeProps {
 }
 
 export default function GameIframe({ game }: GameIframeProps) {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  // 检查是否支持全屏
-  const checkFullscreenSupport = useCallback(() => {
-    const doc = document as FullscreenDocument;
-    return doc.fullscreenEnabled ||
-      doc.webkitFullscreenEnabled ||
-      doc.mozFullScreenEnabled ||
-      doc.msFullscreenEnabled;
+  // 检查是否处于全屏模式
+  const checkFullscreen = useCallback(() => {
+    const fullscreenElement =
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement;
+    setIsFullscreen(!!fullscreenElement);
   }, []);
 
-  // 请求全屏
-  const requestFullscreen = useCallback(async (element: HTMLElement) => {
-    const fullscreenElement = element as FullscreenElement;
-    if (fullscreenElement.requestFullscreen) {
-      await fullscreenElement.requestFullscreen();
-    } else if (fullscreenElement.webkitRequestFullscreen) {
-      await fullscreenElement.webkitRequestFullscreen();
-    } else if (fullscreenElement.mozRequestFullScreen) {
-      await fullscreenElement.mozRequestFullScreen();
-    } else if (fullscreenElement.msRequestFullscreen) {
-      await fullscreenElement.msRequestFullscreen();
-    }
-  }, []);
-
-  // 退出全屏
-  const exitFullscreen = useCallback(async () => {
-    const doc = document as FullscreenDocument & {
-      webkitExitFullscreen?: () => Promise<void>;
-      mozCancelFullScreen?: () => Promise<void>;
-      msExitFullscreen?: () => Promise<void>;
-    };
-    
-    if (doc.exitFullscreen) {
-      await doc.exitFullscreen();
-    } else if (doc.webkitExitFullscreen) {
-      await doc.webkitExitFullscreen();
-    } else if (doc.mozCancelFullScreen) {
-      await doc.mozCancelFullScreen();
-    } else if (doc.msExitFullscreen) {
-      await doc.msExitFullscreen();
-    }
-  }, []);
-
-  // 切换全屏
+  // 切换全屏模式
   const toggleFullscreen = useCallback(async () => {
-    if (!containerRef.current || !checkFullscreenSupport()) return;
+    if (!iframeRef.current) return;
 
-    try {
-      const doc = document as FullscreenDocument;
-      if (!doc.fullscreenElement &&
-          !doc.webkitFullscreenElement &&
-          !doc.mozFullScreenElement &&
-          !doc.msFullscreenElement) {
-        await requestFullscreen(containerRef.current);
-      } else {
-        await exitFullscreen();
+    if (!isFullscreen) {
+      try {
+        if (iframeRef.current.requestFullscreen) {
+          await iframeRef.current.requestFullscreen();
+        } else if (iframeRef.current.webkitRequestFullscreen) {
+          await iframeRef.current.webkitRequestFullscreen();
+        } else if (iframeRef.current.mozRequestFullScreen) {
+          await iframeRef.current.mozRequestFullScreen();
+        } else if (iframeRef.current.msRequestFullscreen) {
+          await iframeRef.current.msRequestFullscreen();
+        }
+      } catch (error) {
+        console.error('Failed to enter fullscreen:', error);
       }
-    } catch (err) {
-      console.error('Error attempting to toggle fullscreen:', err);
+    } else {
+      try {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      } catch (error) {
+        console.error('Failed to exit fullscreen:', error);
+      }
     }
-  }, [checkFullscreenSupport, requestFullscreen, exitFullscreen]);
+  }, [isFullscreen]);
 
-  // 监听全屏变化
+  // 监听全屏状态变化
   useEffect(() => {
-    const handleFullscreenChange = () => {
-      const doc = document as FullscreenDocument;
-      setIsFullscreen(
-        Boolean(
-          doc.fullscreenElement ||
-          doc.webkitFullscreenElement ||
-          doc.mozFullScreenElement ||
-          doc.msFullscreenElement
-        )
-      );
-    };
-
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+    document.addEventListener('fullscreenchange', checkFullscreen);
+    document.addEventListener('webkitfullscreenchange', checkFullscreen);
+    document.addEventListener('mozfullscreenchange', checkFullscreen);
+    document.addEventListener('MSFullscreenChange', checkFullscreen);
 
     return () => {
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
-      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
-      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
-      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+      document.removeEventListener('fullscreenchange', checkFullscreen);
+      document.removeEventListener('webkitfullscreenchange', checkFullscreen);
+      document.removeEventListener('mozfullscreenchange', checkFullscreen);
+      document.removeEventListener('MSFullscreenChange', checkFullscreen);
     };
-  }, []);
-
-  // 监听键盘快捷键
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      // F 键或 F11 键触发全屏
-      if ((e.key === 'f' || e.key === 'F' || e.key === 'F11') && !e.ctrlKey && !e.altKey && !e.metaKey) {
-        e.preventDefault();
-        toggleFullscreen();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [toggleFullscreen]);
+  }, [checkFullscreen]);
 
   return (
-    <div className="relative group">
-      <div 
-        ref={containerRef}
-        className="w-full aspect-video bg-white rounded-lg shadow-md overflow-hidden"
-      >
-        <iframe 
-          src={game.gameUrl}
-          className="w-full h-full border-0"
-          allow="fullscreen"
-          loading="lazy"
-          title={game.title}
-        />
-      </div>
-      
-      {/* 全屏按钮 */}
+    <div className="relative aspect-video bg-card rounded-lg overflow-hidden">
+      <iframe
+        ref={iframeRef}
+        src={game.url}
+        className="w-full h-full"
+        allow="fullscreen"
+      />
       <button
         onClick={toggleFullscreen}
-        className="absolute bottom-4 right-4 bg-black bg-opacity-50 hover:bg-opacity-70 text-white p-2 rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100"
-        aria-label={isFullscreen ? "退出全屏 (按F键)" : "全屏模式 (按F键)"}
+        className="absolute bottom-4 right-4 px-4 py-2 bg-black/50 text-white rounded-lg backdrop-blur-sm hover:bg-black/60 transition-colors"
       >
-        {isFullscreen ? (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9L4 4m0 0l5-5M4 4l5 5M15 9l5-5m0 0l-5-5m5 5l-5 5M9 15l-5 5m0 0l5 5M4 20l5-5M15 15l5 5m0 0l-5 5m5-5l-5-5" />
-          </svg>
-        ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-          </svg>
-        )}
+        {isFullscreen ? '退出全屏' : '全屏游戏'}
       </button>
     </div>
   );

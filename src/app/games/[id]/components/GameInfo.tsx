@@ -1,4 +1,4 @@
-import { Game } from '@/data/games';
+import { Game } from '@/types/game';
 import { formatDate } from '@/lib/utils';
 
 interface GameInfoProps {
@@ -22,11 +22,11 @@ export default function GameInfo({ game }: GameInfoProps) {
           </div>
           <div className="flex justify-between">
             <span className="font-medium">平台</span>
-            <span>{game.platforms.join(', ')}</span>
+            <span>{game.platform}</span>
           </div>
           <div className="flex justify-between">
-            <span className="font-medium">设备</span>
-            <span>{game.devices.join(', ')}</span>
+            <span className="font-medium">控制方式</span>
+            <span>{game.controls}</span>
           </div>
           {game.version && (
             <div className="flex justify-between">
@@ -52,51 +52,31 @@ export default function GameInfo({ game }: GameInfoProps) {
       {/* 游戏描述 */}
       <div className="p-6">
         <h2 className="text-xl font-semibold mb-4">游戏描述</h2>
-        <p className="text-gray-600 mb-4">{game.longDescription || game.description}</p>
-        {game.features && game.features.length > 0 && (
-          <div className="mt-4">
-            <h3 className="font-medium text-gray-900 mb-2">主要特性</h3>
-            <ul className="list-disc list-inside space-y-1 text-gray-600">
-              {game.features.map((feature, index) => (
-                <li key={index}>{feature}</li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <p className="text-gray-600 mb-4">{game.description}</p>
       </div>
 
       {/* 系统要求 */}
-      {game.requirements && (
-        <div className="p-6">
-          <h2 className="text-xl font-semibold mb-4">系统要求</h2>
-          <div className="space-y-3 text-gray-600">
-            {game.requirements.browser && (
-              <div>
-                <span className="font-medium block mb-1">支持浏览器</span>
-                <span>{game.requirements.browser.join(', ')}</span>
-              </div>
-            )}
-            {game.requirements.graphics && (
-              <div>
-                <span className="font-medium block mb-1">显卡</span>
-                <span>{game.requirements.graphics}</span>
-              </div>
-            )}
-            {game.requirements.processor && (
-              <div>
-                <span className="font-medium block mb-1">处理器</span>
-                <span>{game.requirements.processor}</span>
-              </div>
-            )}
-            {game.requirements.memory && (
-              <div>
-                <span className="font-medium block mb-1">内存</span>
-                <span>{game.requirements.memory}</span>
-              </div>
-            )}
+      <div className="p-6">
+        <h2 className="text-xl font-semibold mb-4">系统要求</h2>
+        <div className="space-y-3 text-gray-600">
+          <div>
+            <span className="font-medium block mb-1">支持浏览器</span>
+            <span>{game.browsers}</span>
+          </div>
+          <div>
+            <span className="font-medium block mb-1">显卡</span>
+            <span>{game.graphics}</span>
+          </div>
+          <div>
+            <span className="font-medium block mb-1">处理器</span>
+            <span>{game.processor}</span>
+          </div>
+          <div>
+            <span className="font-medium block mb-1">内存</span>
+            <span>{game.memory}</span>
           </div>
         </div>
-      )}
+      </div>
 
       {/* 标签 */}
       {game.tags && game.tags.length > 0 && (
