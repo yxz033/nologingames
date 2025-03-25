@@ -7,7 +7,7 @@ export default function Home() {
     <div className="space-y-8">
       {/* 分类导航 */}
       <div className="flex space-x-4 text-center">
-        <a href="/categories/action" className="flex-1 py-2 bg-gray-100 rounded hover:bg-gray-200">
+        <Link href="/categories/action" className="flex-1 py-2 bg-gray-100 rounded hover:bg-gray-200">
           Action
         </Link>
         <Link href="/categories/rpg" className="flex-1 py-2 bg-gray-100 rounded hover:bg-gray-200">
