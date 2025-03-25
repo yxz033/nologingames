@@ -2,13 +2,11 @@ import { games } from '@/data/games';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 
-interface Props {
-  params: {
-    id: string;
-  };
-}
-
-export default function GamePage({ params }: Props) {
+export default function GamePage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const game = games.find((g) => g.id === params.id);
 
   if (!game) {
