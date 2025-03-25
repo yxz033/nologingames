@@ -3,11 +3,9 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Metadata } from 'next';
 
-type Props = {
-  params: { id: string }
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: { params: { id: string } }
+): Promise<Metadata> {
   const game = games.find((g) => g.id === params.id);
   
   if (!game) {
@@ -22,7 +20,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ params }: Props) {
+export default async function Page(
+  { params }: { params: { id: string } }
+) {
   const game = games.find((g) => g.id === params.id);
 
   if (!game) {
