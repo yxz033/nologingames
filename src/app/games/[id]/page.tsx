@@ -4,6 +4,13 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 import ExternalLink from '@/components/ExternalLink';
 
+// 添加generateStaticParams函数来生成所有可能的游戏路径
+export async function generateStaticParams() {
+  return games.map((game) => ({
+    id: game.id
+  }));
+}
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
