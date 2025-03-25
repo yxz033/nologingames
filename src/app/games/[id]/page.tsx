@@ -1,12 +1,28 @@
 import { games } from '@/data/games';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import { Metadata } from 'next';
 
-export default function GamePage({
-  params,
-}: {
-  params: { id: string };
-}) {
+type Props = {
+  params: { id: string }
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const game = games.find((g) => g.id === params.id);
+  
+  if (!game) {
+    return {
+      title: 'Game Not Found'
+    };
+  }
+
+  return {
+    title: game.title,
+    description: game.description
+  };
+}
+
+export default async function Page({ params }: Props) {
   const game = games.find((g) => g.id === params.id);
 
   if (!game) {
