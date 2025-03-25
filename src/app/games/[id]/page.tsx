@@ -2,11 +2,15 @@ import { games } from '@/data/games';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Metadata } from 'next';
+import ExternalLink from '@/components/ExternalLink';
 
-export async function generateMetadata(
-  { params }: { params: { id: string } }
-): Promise<Metadata> {
-  const game = games.find((g) => g.id === params.id);
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const resolvedParams = await params;
+  const game = games.find((g) => g.id === resolvedParams.id);
   
   if (!game) {
     return {
@@ -20,10 +24,9 @@ export async function generateMetadata(
   };
 }
 
-export default async function Page(
-  { params }: { params: { id: string } }
-) {
-  const game = games.find((g) => g.id === params.id);
+export default async function Page({ params }: PageProps) {
+  const resolvedParams = await params;
+  const game = games.find((g) => g.id === resolvedParams.id);
 
   if (!game) {
     notFound();
@@ -48,12 +51,12 @@ export default async function Page(
             fill
             className="object-cover"
             priority
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQtJSEkMjU1MC0yMjY2ODg2NjY2NjY+Pj4+Pj5HR0dHR0dHR0dHR0dHR0f/2wBDARUXFyAeIBogHiAeIiIgRyBHREdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0f/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAb/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+            placeholder="blur"
           />
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <a
+            <ExternalLink
               href={game.gameUrl}
-              target="_blank"
-              rel="noopener noreferrer"
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg transition-colors duration-200 flex items-center space-x-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -61,7 +64,7 @@ export default async function Page(
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span>立即游玩</span>
-            </a>
+            </ExternalLink>
           </div>
         </div>
       </div>
@@ -74,7 +77,7 @@ export default async function Page(
             <p>游戏类型: {game.type}</p>
             <p>开发者: {game.developer}</p>
             <p>分类: {game.category}</p>
-            <p>原始链接: <a href={game.gameUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{game.gameUrl}</a></p>
+            <p>原始链接: <ExternalLink href={game.gameUrl} className="text-blue-600 hover:underline">{game.gameUrl}</ExternalLink></p>
           </div>
         </div>
 

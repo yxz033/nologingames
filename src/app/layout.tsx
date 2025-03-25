@@ -25,10 +25,10 @@ export default function RootLayout({
               <div className="flex justify-between items-center">
                 <div className="text-xl font-bold">NoLoginGames</div>
                 <div className="space-x-4">
-                  <a href="/" className="hover:text-blue-600">Home</a>
-                  <a href="/categories/action" className="hover:text-blue-600">Action</a>
-                  <a href="/categories/rpg" className="hover:text-blue-600">RPG</a>
-                  <a href="/categories/casual" className="hover:text-blue-600">Casual</a>
+                  <Link href="/" className="hover:text-blue-600">Home</Link>
+                  <Link href="/categories/action" className="hover:text-blue-600">Action</Link>
+                  <Link href="/categories/rpg" className="hover:text-blue-600">RPG</Link>
+                  <Link href="/categories/casual" className="hover:text-blue-600">Casual</Link>
                 </div>
               </div>
             </nav>
@@ -47,8 +47,8 @@ export default function RootLayout({
                   © 2024 NoLoginGames. All rights reserved.
                 </div>
                 <div className="space-x-4 text-sm">
-                  <a href="/about" className="hover:text-blue-600">About</a>
-                  <a href="/contact" className="hover:text-blue-600">Contact</a>
+                  <Link href="/about" className="hover:text-blue-600">About</Link>
+                  <Link href="/contact" className="hover:text-blue-600">Contact</Link>
                 </div>
               </div>
             </div>

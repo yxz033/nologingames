@@ -1,12 +1,32 @@
+export type GameCategory = 'Action' | 'RPG' | 'Casual' | 'Fighting' | 'Shooting' | 'Multiplayer';
+export type GameType = 'Action/Combat' | 'Shooter' | 'Casual' | 'Multiplayer';
+
 export interface Game {
   id: string;
   title: string;
   description: string;
   developer: string;
-  category: string;
-  type: string;
+  category: GameCategory;
+  type: GameType;
   imageUrl: string;
   gameUrl: string;
+}
+
+export function validateGame(game: Game): boolean {
+  return (
+    typeof game.id === 'string' &&
+    game.id.length > 0 &&
+    typeof game.title === 'string' &&
+    game.title.length > 0 &&
+    typeof game.description === 'string' &&
+    game.description.length > 0 &&
+    typeof game.developer === 'string' &&
+    game.developer.length > 0 &&
+    typeof game.imageUrl === 'string' &&
+    game.imageUrl.length > 0 &&
+    typeof game.gameUrl === 'string' &&
+    game.gameUrl.length > 0
+  );
 }
 
 export const games: Game[] = [
