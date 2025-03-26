@@ -2,6 +2,8 @@
 
 import { useTranslation } from '@/contexts/language-context'
 import { Game } from '@/types/game'
+import StructuredData from '@/components/seo/StructuredData'
+import { generateGameSchema, generateBreadcrumbSchema } from '@/lib/seo/schema'
 
 interface GameDetailProps {
   game: Game
@@ -10,8 +12,34 @@ interface GameDetailProps {
 export function GameDetail({ game }: GameDetailProps) {
   const { t } = useTranslation()
 
+  // 生成游戏结构化数据
+  const gameSchema = generateGameSchema({
+    id: game.id,
+    title: game.title,
+    description: game.description,
+    imageUrl: game.imageUrl,
+    developer: game.developer,
+    genre: game.genre,
+    releaseDate: game.releaseDate,
+    controls: game.controls,
+    platform: game.platform,
+    rating: game.rating,
+    plays: game.plays
+  })
+  
+  // 生成面包屑导航结构化数据
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Games', url: '/games' },
+    { name: game.title, url: `/games/${game.id}` }
+  ])
+
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* 添加结构化数据 */}
+      <StructuredData data={gameSchema} />
+      <StructuredData data={breadcrumbSchema} />
+      
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Game iframe */}
         <div className="lg:col-span-2">

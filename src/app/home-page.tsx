@@ -6,6 +6,8 @@ import { Breadcrumb } from '@/components/ui/breadcrumb';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { GameListSection } from '@/components/games/game-list-section';
+import StructuredData from '@/components/seo/StructuredData';
+import { generateHomeSchema } from '@/lib/seo/schema';
 
 const categories = [
   { id: 'action', name: 'Action' },
@@ -21,8 +23,14 @@ const categories = [
 ];
 
 export function HomePage() {
+  // 生成主页结构化数据
+  const homeSchema = generateHomeSchema(games.length);
+  
   return (
     <div className="space-y-8">
+      {/* 添加结构化数据 */}
+      <StructuredData data={homeSchema} />
+      
       <Suspense>
         <SearchSection 
           totalCount={games.length} 
