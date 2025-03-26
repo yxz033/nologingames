@@ -68,7 +68,7 @@ export async function generateCategoryPageSEO({
       id: categoryId,
       name: category.name,
       description: category.description,
-      imageUrl: category.imageUrl
+      imageUrl: `/images/categories/${categoryId}.jpg`
     });
   } catch (error) {
     console.error('Error generating category page SEO:', error);
