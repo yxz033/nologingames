@@ -20,6 +20,33 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## SEO Automation System
+
+This project implements an automated SEO optimization system to ensure consistent SEO across all pages:
+
+### Key Components
+
+- **SEO Templates**: Pre-configured templates for different page types (homepage, game details, categories)
+- **Metadata Generators**: Helper functions that generate correct metadata for any page
+- **Validation Tools**: Scripts to check SEO compliance during build
+- **Component Library**: Reusable SEO components
+
+### Usage Example
+
+```typescript
+// In your page.tsx file
+import { generateGamePageSEO } from '@/lib/seo/generators';
+
+export function generateMetadata({ params }: PageProps) {
+  return generateGamePageSEO({
+    gameId: params.id,
+    // Other necessary parameters
+  });
+}
+```
+
+See `develop.md` for complete documentation on implementing SEO.
+
 ## Common Issues and Solutions
 
 ### 1. Dynamic Route Parameters
@@ -91,6 +118,13 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 ## Recent Updates
+
+### 2024-03-25
+1. SEO Automation System
+   - Added SEO template system
+   - Implemented metadata generators
+   - Added SEO validation tools
+   - Created reusable SEO components
 
 ### 2024-03-15
 1. Type System

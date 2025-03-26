@@ -45,7 +45,7 @@ export default function GameCard({ game }: GameCardProps) {
           {/* 播放按钮 */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <span className="px-6 py-2 bg-white text-gray-900 rounded-full font-medium transform scale-90 group-hover:scale-100 transition-transform duration-300">
-              开始游戏
+              Play Now
             </span>
           </div>
         </div>
@@ -77,7 +77,7 @@ export default function GameCard({ game }: GameCardProps) {
               {/* 游戏时长 */}
               <div className="flex items-center text-gray-500">
                 <Clock className="w-4 h-4 mr-1" />
-                <span>{game.duration || '不限'}</span>
+                <span>{game.duration || 'Unlimited'}</span>
               </div>
             </div>
 

@@ -11,7 +11,7 @@ export interface Game {
   version: string
   releaseDate: string
   lastUpdated: string
-  browsers: string
+  browsers: string[]
   graphics: string
   processor: string
   memory: string
@@ -22,4 +22,15 @@ export interface Game {
   relatedGames?: string[]
   tags?: string[]
   screenshots?: string[]
+  stats?: {
+    plays: number
+    rating: number
+    reviews: number
+  }
+  requirements?: {
+    browsers: string[]
+    graphics: string
+    processor: string
+    memory: string
+  }
 } 

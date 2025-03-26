@@ -17,12 +17,45 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return {
       title: 'Game Not Found - NoLoginGames',
       description: 'The requested game could not be found.',
+      openGraph: {
+        title: 'Game Not Found - NoLoginGames',
+        description: 'The requested game could not be found.',
+        type: 'website',
+        images: [
+          {
+            url: '/images/og-404.jpg',
+            width: 1200,
+            height: 630,
+            alt: 'Game Not Found - NoLoginGames',
+          }
+        ]
+      },
+      alternates: {
+        canonical: '/games/not-found'
+      }
     }
   }
 
   return {
-    title: `${game.title} - NoLoginGames`,
-    description: game.description,
+    title: `${game.title} - Free Online Game | NoLoginGames`,
+    description: `🎮 ${game.description} Experience ${game.title} - a thrilling ${game.genre.toLowerCase()} game by ${game.developer}. Play instantly in your browser, no download required!`,
+    keywords: `${game.title}, free online game, ${game.genre} game, browser game, HTML5 game, ${game.developer}`,
+    openGraph: {
+      title: `${game.title} - Free Online Game | NoLoginGames`,
+      description: `🎮 ${game.description} Experience ${game.title} - a thrilling ${game.genre.toLowerCase()} game by ${game.developer}. Play instantly in your browser, no download required!`,
+      type: 'website',
+      images: [
+        {
+          url: game.imageUrl || '/images/og-default.jpg',
+          width: 1200,
+          height: 630,
+          alt: `${game.title} - Free Online Game`,
+        }
+      ]
+    },
+    alternates: {
+      canonical: `/games/${game.id}`
+    }
   }
 }
 

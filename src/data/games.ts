@@ -4,29 +4,40 @@ export const games: Game[] = [
   {
     id: 'narrow-one',
     title: 'Narrow One',
-    description: 'A casual shooting game with simple controls and addictive gameplay.',
-    url: '@https://narrow.one/',
+    description: 'A challenging platformer where you must navigate through narrow passages and obstacles. Test your reflexes and timing in this addictive game!',
+    url: 'https://example.com/games/narrow-one',
     imageUrl: '/images/games/narrow-one.jpg',
-    developer: 'Pelican Party',
-    genre: 'Shooting',
-    platform: 'Browser, Mobile',
-    controls: 'Keyboard/Mouse, Touch',
-    version: '1.2.0',
-    releaseDate: '2023-12-01',
-    lastUpdated: '2024-03-15',
-    browsers: 'Chrome 88+, Firefox 87+, Safari 14+',
+    developer: 'GameDev Studio',
+    genre: 'Platform',
+    platform: 'HTML5',
+    controls: 'Arrow keys or WASD to move, Space to jump',
+    version: '1.0.0',
+    releaseDate: '2024-03-25',
+    lastUpdated: '2024-03-25',
+    browsers: ['Chrome', 'Firefox', 'Safari', 'Edge'],
     graphics: 'WebGL 2.0',
-    processor: '1.6 GHz',
-    memory: '2 GB RAM',
-    plays: 250000,
-    rating: 4.7,
+    processor: 'Any modern CPU',
+    memory: '2GB RAM',
+    plays: 1000,
+    rating: 4.5,
     duration: '10-15 min',
     category: 'shooter',
-    tags: ['Shooter', 'Casual', 'Action', 'Multiplayer'],
+    tags: ['platform', 'action', 'challenge', 'reflexes'],
     screenshots: [
       '/screenshots/narrow-one-1.jpg',
       '/screenshots/narrow-one-2.jpg',
       '/screenshots/narrow-one-3.jpg'
-    ]
+    ],
+    stats: {
+      plays: 1000,
+      rating: 4.5,
+      reviews: 100
+    },
+    requirements: {
+      browsers: ['Chrome', 'Firefox', 'Safari', 'Edge'],
+      graphics: 'WebGL 2.0',
+      processor: 'Any modern CPU',
+      memory: '2GB RAM'
+    }
   }
 ] 
